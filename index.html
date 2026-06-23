@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>哇喜行銷 — 營業額試算工具</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@900&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #c4dbe3;
+      --blue-dark: #8fb8c5;
+      --blue-bg: #edf5f8;
+      --yellow: #ffd53b;
+      --yellow-bright: #ffe75f;
+      --dark: #3e3f3f;
+      --gray1: #a1afbd;
+      --gray2: #6e7374;
+      --light: #f0f0f0;
+      --white: #ffffff;
+      --fn-title: 'Noto Serif TC', serif;
+      --fn-body: 'Noto Sans TC', sans-serif;
+    }
+    body {
+      font-family: var(--fn-body);
+      background: #f7f7f7;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .page {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2.5rem 2rem 3rem;
+      width: 100%;
+      max-width: 760px;
+      height: fit-content;
+    }
+
+    /* header */
+    .hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 2px solid var(--blue); }
+    .logo { height: 44px; object-fit: contain; }
+    .hdr-right { text-align: right; }
+    .hdr-title { font-family: var(--fn-title); font-size: 22px; font-weight: 900; color: var(--dark); line-height: 1.2; }
+    .hdr-sub { font-size: 12px; color: var(--gray2); margin-top: 3px; }
+
+    /* formula */
+    .formula { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; background: var(--blue-bg); border-radius: 12px; padding: 14px 18px; }
+    .f-tag { background: var(--blue); color: var(--dark); border-radius: 20px; padding: 4px 14px; font-size: 13px; }
+    .f-tag.yl { background: var(--yellow); }
+    .f-eq { font-size: 16px; color: var(--gray1); }
+
+    /* table */
+    .tbl-head { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 34px; gap: 8px; padding: 0 0 8px; border-bottom: 1.5px solid var(--dark); }
+    .tbl-head span { font-size: 11px; color: var(--gray2); letter-spacing: 0.06em; }
+    .tbl-head span:nth-child(n+2) { text-align: right; }
+    .rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+    .srow { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 34px; gap: 8px; align-items: center; }
+
+    /* inputs */
+    .finput { height: 40px; width: 100%; border: 1.5px solid var(--light); border-radius: 8px; padding: 0 10px; font-size: 14px; font-family: var(--fn-body); color: var(--dark); background: var(--white); outline: none; transition: border-color .15s; }
+    .finput:focus { border-color: var(--blue-dark); }
+    .finput.r { text-align: right; padding-right: 26px; }
+    .iw { position: relative; display: flex; align-items: center; }
+    .iw input { width: 100%; }
+    .iw .pu { position: absolute; right: 9px; font-size: 12px; color: var(--gray1); pointer-events: none; }
+    .iw .pl { position: absolute; left: 9px; font-size: 12px; color: var(--gray1); pointer-events: none; }
+    .iw.hasl input { padding-left: 22px; }
+
+    /* buttons */
+    .del { width: 34px; height: 34px; border: 1.5px solid var(--light); border-radius: 8px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray1); font-size: 15px; transition: all .15s; flex-shrink: 0; }
+    .del:hover { border-color: #e24b4a; color: #e24b4a; }
+    .add-btn { display: flex; align-items: center; gap: 6px; border: 1.5px dashed var(--gray1); border-radius: 8px; padding: 9px 16px; font-size: 13px; font-family: var(--fn-body); color: var(--gray2); background: transparent; cursor: pointer; margin-top: 8px; transition: all .15s; }
+    .add-btn:hover { border-color: var(--dark); color: var(--dark); }
+
+    .div { border: none; border-top: 1.5px solid var(--light); margin: 1.75rem 0; }
+
+    /* results */
+    .results { background: var(--dark); border-radius: 16px; overflow: hidden; }
+    .res-row1 { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .res-row2 { display: grid; grid-template-columns: 1fr 1fr; }
+    .r-cell { padding: 1.25rem 1.25rem 1rem; border-right: 1px solid rgba(255,255,255,.08); }
+    .r-cell:last-child { border-right: none; }
+    .r-cell.yl { background: var(--yellow-bright); }
+    .r-cell.yl2 { background: var(--yellow); }
+    .r-lbl { font-size: 11px; letter-spacing: 0.08em; color: rgba(255,255,255,.45); margin-bottom: 6px; }
+    .r-cell.yl .r-lbl, .r-cell.yl2 .r-lbl { color: rgba(62,63,63,.55); }
+    .r-note { font-size: 10px; color: rgba(255,255,255,.3); margin-top: 3px; }
+    .r-cell.yl .r-note, .r-cell.yl2 .r-note { color: rgba(62,63,63,.4); }
+    .r-val { font-family: var(--fn-title); font-size: 24px; font-weight: 900; color: #fff; }
+    .r-cell.yl .r-val, .r-cell.yl2 .r-val { color: var(--dark); }
+    .r-val.lg { font-size: 28px; }
+
+    /* breakdown */
+    .bkd { padding: 1.25rem; }
+    .bkd-head { font-size: 11px; letter-spacing: 0.1em; color: rgba(255,255,255,.35); margin-bottom: 12px; }
+    .bd-rows { display: flex; flex-direction: column; gap: 10px; }
+    .bd-row { display: grid; grid-template-columns: 110px 1fr 100px 42px; gap: 10px; align-items: center; }
+    .bd-name { font-size: 13px; color: rgba(255,255,255,.75); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .bd-bar-bg { height: 4px; background: rgba(255,255,255,.1); border-radius: 2px; overflow: hidden; }
+    .bd-bar { height: 100%; background: var(--yellow); border-radius: 2px; transition: width .35s; }
+    .bd-amt { font-size: 13px; color: #fff; font-weight: 500; text-align: right; }
+    .bd-pct { font-size: 11px; color: rgba(255,255,255,.35); text-align: right; }
+
+    /* footer */
+    .footer { text-align: center; margin-top: 1.5rem; font-size: 12px; color: var(--gray1); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hdr">
+      <img class="logo" src="https://woow99.site-now.app/wp-content/uploads/2026/06/snimgIK6nkl.webp" alt="哇喜行銷 logo">
+      <div class="hdr-right">
+        <div class="hdr-title">營業額試算工具</div>
+        <div class="hdr-sub">Business Revenue Calculator</div>
+      </div>
+    </div>
+
+    <div class="formula">
+      <span class="f-tag yl">營業額</span>
+      <span class="f-eq">=</span>
+      <span class="f-tag">流量</span>
+      <span class="f-eq">×</span>
+      <span class="f-tag">轉換率</span>
+      <span class="f-eq">×</span>
+      <span class="f-tag">客單價</span>
+    </div>
+
+    <div class="tbl-head">
+      <span>流量來源</span>
+      <span>每月流量（人）</span>
+      <span>轉換率（%）</span>
+      <span>客單價（NT$）</span>
+      <span></span>
+    </div>
+    <div class="rows" id="rows"></div>
+    <button class="add-btn" id="addBtn">
+      <i class="ti ti-plus"></i> 新增來源
+    </button>
+
+    <hr class="div">
+
+    <div class="results">
+      <div class="res-row1">
+        <div class="r-cell">
+          <div class="r-lbl">總流量</div>
+          <div class="r-val" id="rT">0</div>
+        </div>
+        <div class="r-cell">
+          <div class="r-lbl">預估成交數</div>
+          <div class="r-val" id="rC">0</div>
+        </div>
+        <div class="r-cell">
+          <div class="r-lbl">平均客單價</div>
+          <div class="r-val" id="rA">NT$0</div>
+          <div class="r-note">月營業額 ÷ 成交數</div>
+        </div>
+      </div>
+      <div class="res-row2">
+        <div class="r-cell yl">
+          <div class="r-lbl">預估月營業額</div>
+          <div class="r-val lg" id="rM">NT$0</div>
+        </div>
+        <div class="r-cell yl2">
+          <div class="r-lbl">預估年營業額</div>
+          <div class="r-val lg" id="rY">NT$0</div>
+          <div class="r-note">月營業額 × 12</div>
+        </div>
+      </div>
+      <div class="bkd">
+        <div class="bkd-head">各來源貢獻</div>
+        <div class="bd-rows" id="bkd"></div>
+      </div>
+    </div>
+
+    <div class="footer">哇喜行銷 · I'M A MARKETER · woow99.site-now.app</div>
+  </div>
+
+  <script>
+    const defs = [
+      { name: '親友介紹', traffic: 20, conv: 10, price: 2500 },
+      { name: '搜尋流量', traffic: 300, conv: 2, price: 2000 },
+      { name: '社群流量', traffic: 300, conv: 2, price: 1500 },
+      { name: '廣告流量', traffic: 1000, conv: 1, price: 2000 },
+      { name: '老客人', traffic: 100, conv: 30, price: 3000 },
+    ];
+    let srcs = defs.map((s, i) => ({ id: i, ...s }));
+    let nid = srcs.length;
+    const fmt = n => Math.round(n).toLocaleString('zh-TW');
+
+    function renderRows() {
+      const el = document.getElementById('rows');
+      el.innerHTML = '';
+      srcs.forEach(s => {
+        const d = document.createElement('div');
+        d.className = 'srow';
+        d.innerHTML = `
+          <input class="finput" type="text" value="${s.name}" placeholder="來源名稱" data-id="${s.id}" data-f="name">
+          <div class="iw"><input class="finput r" type="number" value="${s.traffic}" min="0" step="1" data-id="${s.id}" data-f="traffic"><span class="pu">人</span></div>
+          <div class="iw"><input class="finput r" type="number" value="${s.conv}" min="0" max="100" step="0.1" data-id="${s.id}" data-f="conv"><span class="pu">%</span></div>
+          <div class="iw hasl"><span class="pl">$</span><input class="finput r" type="number" value="${s.price}" min="0" step="100" data-id="${s.id}" data-f="price"></div>
+          <button class="del" data-id="${s.id}" aria-label="移除"><i class="ti ti-x" style="pointer-events:none"></i></button>
+        `;
+        el.appendChild(d);
+      });
+    }
+
+    function calc() {
+      const tt = srcs.reduce((a, s) => a + (s.traffic || 0), 0);
+      const tc = srcs.reduce((a, s) => a + (s.traffic || 0) * ((s.conv || 0) / 100), 0);
+      const tr = srcs.reduce((a, s) => a + (s.traffic || 0) * ((s.conv || 0) / 100) * (s.price || 0), 0);
+      const avg = tc > 0 ? tr / tc : 0;
+      document.getElementById('rT').textContent = fmt(tt);
+      document.getElementById('rC').textContent = fmt(tc);
+      document.getElementById('rA').textContent = 'NT$' + fmt(avg);
+      document.getElementById('rM').textContent = 'NT$' + fmt(tr);
+      document.getElementById('rY').textContent = 'NT$' + fmt(tr * 12);
+      const bkd = document.getElementById('bkd');
+      bkd.innerHTML = srcs.map(s => {
+        const rev = (s.traffic || 0) * ((s.conv || 0) / 100) * (s.price || 0);
+        const pct = tr > 0 ? (rev / tr * 100) : 0;
+        return `<div class="bd-row">
+          <span class="bd-name" title="${s.name || '（未命名）'}">${s.name || '（未命名）'}</span>
+          <div class="bd-bar-bg"><div class="bd-bar" style="width:${pct.toFixed(1)}%"></div></div>
+          <span class="bd-amt">NT$${fmt(rev)}</span>
+          <span class="bd-pct">${pct.toFixed(0)}%</span>
+        </div>`;
+      }).join('');
+    }
+
+    document.getElementById('rows').addEventListener('input', e => {
+      const id = parseInt(e.target.dataset.id), f = e.target.dataset.f;
+      if (!f) return;
+      const s = srcs.find(x => x.id === id);
+      if (!s) return;
+      s[f] = f === 'name' ? e.target.value : (parseFloat(e.target.value) || 0);
+      calc();
+    });
+    document.getElementById('rows').addEventListener('click', e => {
+      const b = e.target.closest('.del');
+      if (!b) return;
+      srcs = srcs.filter(s => s.id !== parseInt(b.dataset.id));
+      renderRows(); calc();
+    });
+    document.getElementById('addBtn').addEventListener('click', () => {
+      srcs.push({ id: nid++, name: '', traffic: 0, conv: 3, price: 1000 });
+      renderRows(); calc();
+      const last = document.querySelectorAll('#rows .srow');
+      if (last.length) last[last.length - 1].querySelector('input[type="text"]').focus();
+    });
+
+    renderRows(); calc();
+  </script>
+</body>
+</html>

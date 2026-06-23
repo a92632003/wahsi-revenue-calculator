@@ -26,6 +26,7 @@
     .hdr-sub { font-size: 12px; color: var(--gray2); margin-top: 3px; }
 
     .formula { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; background: var(--blue-bg); border-radius: 12px; padding: 14px 18px; }
+    .formula-top, .formula-bottom { display: contents; }
     .f-tag { background: var(--blue); color: var(--dark); border-radius: 20px; padding: 4px 14px; font-size: 13px; }
     .f-tag.yl { background: var(--yellow); }
     .f-eq { font-size: 16px; color: var(--gray1); }
@@ -120,12 +121,17 @@
       .srow > .iw.hasl input { padding-left: 18px; padding-right: 8px; }
       .srow > .iw .pu, .srow > .iw .pl { top: auto; bottom: 8px; }
 
+      /* 公式列：營業額獨立一行，其餘在下一行 */
+      .formula { flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px 14px; }
+      .formula-top { display: flex; align-items: center; gap: 8px; }
+      .formula-bottom { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; }
+
       /* results */
       .res-row1 { grid-template-columns: 1fr 1fr; }
       .res-row1 .r-cell:nth-child(3) { grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,.08); border-right: none; }
-      .r-cell { padding: 1rem; }
-      .r-val { font-size: 20px; }
-      .r-val.lg { font-size: 22px; }
+      .r-cell { padding: 0.875rem 1rem; }
+      .r-val { font-size: 18px; }
+      .r-val.lg { font-size: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .bd-row { grid-template-columns: 70px 1fr 78px 32px; gap: 6px; }
       .bd-amt { font-size: 12px; }
       .bd-pct { font-size: 10px; }
@@ -143,13 +149,17 @@
     </div>
 
     <div class="formula">
-      <span class="f-tag yl">營業額</span>
-      <span class="f-eq">=</span>
-      <span class="f-tag">流量</span>
-      <span class="f-eq">×</span>
-      <span class="f-tag">轉換率</span>
-      <span class="f-eq">×</span>
-      <span class="f-tag">客單價</span>
+      <div class="formula-top">
+        <span class="f-tag yl">營業額</span>
+      </div>
+      <div class="formula-bottom">
+        <span class="f-eq">=</span>
+        <span class="f-tag">流量</span>
+        <span class="f-eq">×</span>
+        <span class="f-tag">轉換率</span>
+        <span class="f-eq">×</span>
+        <span class="f-tag">客單價</span>
+      </div>
     </div>
 
     <div class="tbl-head">

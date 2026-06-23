@@ -40,14 +40,14 @@
     /* srow: 5 direct children — input, iw, iw, iw.hasl, button */
     .srow { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 34px; gap: 8px; align-items: center; }
 
-    .finput { height: 40px; width: 100%; border: 1.5px solid var(--blue-dark); border-radius: 8px; padding: 0 10px; font-size: 14px; font-family: var(--fn-body); color: var(--dark); background: var(--blue-bg); outline: none; transition: border-color .15s, background .15s; }
-    .finput:focus { border-color: var(--dark); background: var(--white); }
-    .finput.r { text-align: right; padding-right: 26px; }
+    .finput { height: 48px; width: 100%; border: 1.5px solid #d0dde5; border-radius: 10px; padding: 0 12px; font-size: 15px; font-family: var(--fn-body); color: var(--dark); background: #e8f2f6; outline: none; transition: border-color .15s, background .15s; }
+    .finput:focus { border-color: var(--blue-dark); background: var(--white); }
+    .finput.r { text-align: right; padding-right: 28px; }
     .iw { position: relative; display: flex; align-items: center; }
     .iw input { width: 100%; }
-    .iw .pu { position: absolute; right: 9px; font-size: 12px; color: var(--gray1); pointer-events: none; }
-    .iw .pl { position: absolute; left: 9px; font-size: 12px; color: var(--gray1); pointer-events: none; }
-    .iw.hasl input { padding-left: 22px; }
+    .iw .pu { position: absolute; right: 11px; font-size: 13px; color: var(--gray2); pointer-events: none; }
+    .iw .pl { position: absolute; left: 11px; font-size: 13px; color: var(--gray2); pointer-events: none; }
+    .iw.hasl input { padding-left: 24px; }
 
     .del { width: 34px; height: 34px; border: 1.5px solid var(--light); border-radius: 8px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray1); font-size: 15px; transition: all .15s; flex-shrink: 0; }
     .del:hover { border-color: #e24b4a; color: #e24b4a; }

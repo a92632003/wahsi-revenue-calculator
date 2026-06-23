@@ -9,49 +9,36 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --blue: #c4dbe3;
-      --blue-dark: #8fb8c5;
-      --blue-bg: #edf5f8;
-      --yellow: #ffd53b;
-      --yellow-bright: #ffe75f;
-      --dark: #3e3f3f;
-      --gray1: #a1afbd;
-      --gray2: #6e7374;
-      --light: #f0f0f0;
-      --white: #ffffff;
+      --blue: #c4dbe3; --blue-dark: #8fb8c5; --blue-bg: #edf5f8;
+      --yellow: #ffd53b; --yellow-bright: #ffe75f;
+      --dark: #3e3f3f; --gray1: #a1afbd; --gray2: #6e7374;
+      --light: #f0f0f0; --white: #ffffff;
       --fn-title: 'Noto Serif TC', serif;
       --fn-body: 'Noto Sans TC', sans-serif;
     }
-    body {
-      font-family: var(--fn-body);
-    }
-    .page {
-      background: var(--white);
-      padding: 2rem 1.5rem 2.5rem;
-      width: 100%;
-    }
+    body { font-family: var(--fn-body); }
+    .page { background: var(--white); padding: 2rem 1.5rem 2.5rem; width: 100%; }
 
-    /* header */
     .hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 2px solid var(--blue); }
     .logo { height: 44px; object-fit: contain; }
     .hdr-right { text-align: right; }
-    .hdr-title { font-family: var(--fn-title); font-size: 22px; font-weight: 900; color: var(--dark); line-height: 1.2; }
+    .hdr-title { font-family: var(--fn-title); font-size: 22px; font-weight: 900; color: var(--dark); }
     .hdr-sub { font-size: 12px; color: var(--gray2); margin-top: 3px; }
 
-    /* formula */
     .formula { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; background: var(--blue-bg); border-radius: 12px; padding: 14px 18px; }
     .f-tag { background: var(--blue); color: var(--dark); border-radius: 20px; padding: 4px 14px; font-size: 13px; }
     .f-tag.yl { background: var(--yellow); }
     .f-eq { font-size: 16px; color: var(--gray1); }
 
-    /* table */
+    /* ── desktop table ── */
     .tbl-head { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 34px; gap: 8px; padding: 0 0 8px; border-bottom: 1.5px solid var(--dark); }
     .tbl-head span { font-size: 11px; color: var(--gray2); letter-spacing: 0.06em; }
     .tbl-head span:nth-child(n+2) { text-align: right; }
     .rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+
+    /* srow: 5 direct children — input, iw, iw, iw.hasl, button */
     .srow { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 34px; gap: 8px; align-items: center; }
 
-    /* inputs */
     .finput { height: 40px; width: 100%; border: 1.5px solid var(--light); border-radius: 8px; padding: 0 10px; font-size: 14px; font-family: var(--fn-body); color: var(--dark); background: var(--white); outline: none; transition: border-color .15s; }
     .finput:focus { border-color: var(--blue-dark); }
     .finput.r { text-align: right; padding-right: 26px; }
@@ -61,15 +48,13 @@
     .iw .pl { position: absolute; left: 9px; font-size: 12px; color: var(--gray1); pointer-events: none; }
     .iw.hasl input { padding-left: 22px; }
 
-    /* buttons */
     .del { width: 34px; height: 34px; border: 1.5px solid var(--light); border-radius: 8px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray1); font-size: 15px; transition: all .15s; flex-shrink: 0; }
     .del:hover { border-color: #e24b4a; color: #e24b4a; }
     .add-btn { display: flex; align-items: center; gap: 6px; border: 1.5px dashed var(--gray1); border-radius: 8px; padding: 9px 16px; font-size: 13px; font-family: var(--fn-body); color: var(--gray2); background: transparent; cursor: pointer; margin-top: 8px; transition: all .15s; }
     .add-btn:hover { border-color: var(--dark); color: var(--dark); }
-
     .div { border: none; border-top: 1.5px solid var(--light); margin: 1.75rem 0; }
 
-    /* results */
+    /* ── results ── */
     .results { background: var(--dark); border-radius: 16px; overflow: hidden; }
     .res-row1 { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid rgba(255,255,255,.08); }
     .res-row2 { display: grid; grid-template-columns: 1fr 1fr; }
@@ -85,7 +70,6 @@
     .r-cell.yl .r-val, .r-cell.yl2 .r-val { color: var(--dark); }
     .r-val.lg { font-size: 28px; }
 
-    /* breakdown */
     .bkd { padding: 1.25rem; }
     .bkd-head { font-size: 11px; letter-spacing: 0.1em; color: rgba(255,255,255,.35); margin-bottom: 12px; }
     .bd-rows { display: flex; flex-direction: column; gap: 10px; }
@@ -96,16 +80,13 @@
     .bd-amt { font-size: 13px; color: #fff; font-weight: 500; text-align: right; }
     .bd-pct { font-size: 11px; color: rgba(255,255,255,.35); text-align: right; }
 
-
-    /* mobile card layout */
-    .mob-label { display: none; font-size: 10px; color: var(--gray2); margin-bottom: 3px; letter-spacing: 0.04em; }
-
+    /* ── mobile ── */
     @media (max-width: 600px) {
       .page { padding: 1.25rem 1rem 2rem; }
       .hdr-title { font-size: 17px; }
       .tbl-head { display: none; }
-      .mob-label { display: block; }
 
+      /* card layout: 2 rows, 4 cols */
       .srow {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 34px;
@@ -115,29 +96,39 @@
         border-radius: 10px;
         padding: 12px;
       }
-      /* 來源名稱：橫跨全行 */
-      .srow > .name-wrap { grid-column: 1 / 4; grid-row: 1; }
-      /* 刪除鍵：右上角 */
+      /* row 1: name spans 3 cols, del in col 4 */
+      .srow > input[type="text"] { grid-column: 1 / 4; grid-row: 1; }
       .srow > .del { grid-column: 4; grid-row: 1; align-self: center; }
-      /* 三個數字欄：第二行各佔一格 */
-      .srow > .iw { grid-row: 2; display: flex; flex-direction: column; align-items: stretch; }
-      .srow > .iw:nth-of-type(1) { grid-column: 1; }
-      .srow > .iw:nth-of-type(2) { grid-column: 2; }
-      .srow > .iw:nth-of-type(3) { grid-column: 3; }
-      .srow > .iw .finput { width: 100%; padding-right: 22px; font-size: 13px; }
-      .srow > .iw.hasl .finput { padding-left: 18px; padding-right: 8px; }
-      .srow > .iw .pu { top: auto; bottom: 8px; }
-      .srow > .iw .pl { top: auto; bottom: 8px; }
+      /* row 2: 3 iw divs each 1 col */
+      .srow > .iw { grid-row: 2; flex-direction: column; align-items: stretch; }
+      .srow > .iw:nth-child(2) { grid-column: 1; }
+      .srow > .iw:nth-child(3) { grid-column: 2; }
+      .srow > .iw:nth-child(4) { grid-column: 3; }
 
-      .name-input { border-color: transparent !important; background: transparent !important; padding-left: 2px !important; font-size: 15px; font-weight: 500; }
+      /* label above each field via data-label */
+      .srow > .iw[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 10px;
+        color: var(--gray2);
+        margin-bottom: 3px;
+        letter-spacing: 0.04em;
+      }
 
+      /* inputs inside iw on mobile */
+      .srow > .iw input { font-size: 13px; padding-right: 22px; }
+      .srow > .iw.hasl input { padding-left: 18px; padding-right: 8px; }
+      .srow > .iw .pu, .srow > .iw .pl { top: auto; bottom: 8px; }
+
+      /* results */
       .res-row1 { grid-template-columns: 1fr 1fr; }
       .res-row1 .r-cell:nth-child(3) { grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,.08); border-right: none; }
       .r-cell { padding: 1rem; }
       .r-val { font-size: 20px; }
       .r-val.lg { font-size: 22px; }
-      .bd-row { grid-template-columns: 75px 1fr 80px 34px; gap: 6px; }
+      .bd-row { grid-template-columns: 70px 1fr 78px 32px; gap: 6px; }
       .bd-amt { font-size: 12px; }
+      .bd-pct { font-size: 10px; }
     }
   </style>
 </head>
@@ -207,7 +198,6 @@
         <div class="bd-rows" id="bkd"></div>
       </div>
     </div>
-
   </div>
 
   <script>
@@ -229,20 +219,18 @@
         const d = document.createElement('div');
         d.className = 'srow';
         d.innerHTML = `
-          <div class="name-wrap">
-            <input class="finput name-input" type="text" value="${s.name}" placeholder="來源名稱" data-id="${s.id}" data-f="name">
+          <input class="finput" type="text" value="${s.name}" placeholder="來源名稱" data-id="${s.id}" data-f="name">
+          <div class="iw" data-label="每月流量">
+            <input class="finput r" type="number" value="${s.traffic}" min="0" step="1" data-id="${s.id}" data-f="traffic">
+            <span class="pu">人</span>
           </div>
-          <div class="iw">
-            <div class="mob-label">每月流量</div>
-            <input class="finput r" type="number" value="${s.traffic}" min="0" step="1" data-id="${s.id}" data-f="traffic"><span class="pu">人</span>
+          <div class="iw" data-label="轉換率">
+            <input class="finput r" type="number" value="${s.conv}" min="0" max="100" step="0.1" data-id="${s.id}" data-f="conv">
+            <span class="pu">%</span>
           </div>
-          <div class="iw">
-            <div class="mob-label">轉換率</div>
-            <input class="finput r" type="number" value="${s.conv}" min="0" max="100" step="0.1" data-id="${s.id}" data-f="conv"><span class="pu">%</span>
-          </div>
-          <div class="iw hasl">
-            <div class="mob-label">客單價</div>
-            <span class="pl">$</span><input class="finput r" type="number" value="${s.price}" min="0" step="100" data-id="${s.id}" data-f="price">
+          <div class="iw hasl" data-label="客單價">
+            <span class="pl">$</span>
+            <input class="finput r" type="number" value="${s.price}" min="0" step="100" data-id="${s.id}" data-f="price">
           </div>
           <button class="del" data-id="${s.id}" aria-label="移除"><i class="ti ti-x" style="pointer-events:none"></i></button>
         `;

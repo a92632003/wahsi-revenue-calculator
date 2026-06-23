@@ -40,8 +40,8 @@
     /* srow: 5 direct children — input, iw, iw, iw.hasl, button */
     .srow { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 34px; gap: 8px; align-items: center; }
 
-    .finput { height: 40px; width: 100%; border: 1.5px solid var(--light); border-radius: 8px; padding: 0 10px; font-size: 14px; font-family: var(--fn-body); color: var(--dark); background: var(--white); outline: none; transition: border-color .15s; }
-    .finput:focus { border-color: var(--blue-dark); }
+    .finput { height: 40px; width: 100%; border: 1.5px solid var(--blue-dark); border-radius: 8px; padding: 0 10px; font-size: 14px; font-family: var(--fn-body); color: var(--dark); background: var(--blue-bg); outline: none; transition: border-color .15s, background .15s; }
+    .finput:focus { border-color: var(--dark); background: var(--white); }
     .finput.r { text-align: right; padding-right: 26px; }
     .iw { position: relative; display: flex; align-items: center; }
     .iw input { width: 100%; }
@@ -58,17 +58,16 @@
     /* ── results ── */
     .results { background: var(--dark); border-radius: 16px; overflow: hidden; }
     .res-row1 { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid rgba(255,255,255,.08); }
-    .res-row2 { display: grid; grid-template-columns: 1fr 1fr; }
+    .res-row2 { display: grid; grid-template-columns: 1fr; }
     .r-cell { padding: 1.25rem 1.25rem 1rem; border-right: 1px solid rgba(255,255,255,.08); }
     .r-cell:last-child { border-right: none; }
     .r-cell.yl { background: var(--yellow-bright); }
-    .r-cell.yl2 { background: var(--yellow); }
     .r-lbl { font-size: 11px; letter-spacing: 0.08em; color: rgba(255,255,255,.45); margin-bottom: 6px; }
-    .r-cell.yl .r-lbl, .r-cell.yl2 .r-lbl { color: rgba(62,63,63,.55); }
+    .r-cell.yl .r-lbl { color: rgba(62,63,63,.55); }
     .r-note { font-size: 10px; color: rgba(255,255,255,.3); margin-top: 3px; }
-    .r-cell.yl .r-note, .r-cell.yl2 .r-note { color: rgba(62,63,63,.4); }
+    .r-cell.yl .r-note { color: rgba(62,63,63,.4); }
     .r-val { font-family: var(--fn-title); font-size: 24px; font-weight: 900; color: #fff; }
-    .r-cell.yl .r-val, .r-cell.yl2 .r-val { color: var(--dark); }
+    .r-cell.yl .r-val { color: var(--dark); }
     .r-val.lg { font-size: 28px; }
 
     .bkd { padding: 1.25rem; }
@@ -196,11 +195,6 @@
         <div class="r-cell yl">
           <div class="r-lbl">預估月營業額</div>
           <div class="r-val lg" id="rM">NT$0</div>
-        </div>
-        <div class="r-cell yl2">
-          <div class="r-lbl">預估年營業額</div>
-          <div class="r-val lg" id="rY">NT$0</div>
-          <div class="r-note">月營業額 × 12</div>
         </div>
       </div>
       <div class="bkd">

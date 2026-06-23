@@ -96,6 +96,49 @@
     .bd-amt { font-size: 13px; color: #fff; font-weight: 500; text-align: right; }
     .bd-pct { font-size: 11px; color: rgba(255,255,255,.35); text-align: right; }
 
+
+    /* mobile card layout */
+    .mob-label { display: none; font-size: 10px; color: var(--gray2); margin-bottom: 3px; letter-spacing: 0.04em; }
+
+    @media (max-width: 600px) {
+      .page { padding: 1.25rem 1rem 2rem; }
+      .hdr-title { font-size: 17px; }
+      .tbl-head { display: none; }
+      .mob-label { display: block; }
+
+      .srow {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 34px;
+        grid-template-rows: auto auto;
+        gap: 6px 8px;
+        background: var(--blue-bg);
+        border-radius: 10px;
+        padding: 12px;
+      }
+      /* 來源名稱：橫跨全行 */
+      .srow > .name-wrap { grid-column: 1 / 4; grid-row: 1; }
+      /* 刪除鍵：右上角 */
+      .srow > .del { grid-column: 4; grid-row: 1; align-self: center; }
+      /* 三個數字欄：第二行各佔一格 */
+      .srow > .iw { grid-row: 2; display: flex; flex-direction: column; align-items: stretch; }
+      .srow > .iw:nth-of-type(1) { grid-column: 1; }
+      .srow > .iw:nth-of-type(2) { grid-column: 2; }
+      .srow > .iw:nth-of-type(3) { grid-column: 3; }
+      .srow > .iw .finput { width: 100%; padding-right: 22px; font-size: 13px; }
+      .srow > .iw.hasl .finput { padding-left: 18px; padding-right: 8px; }
+      .srow > .iw .pu { top: auto; bottom: 8px; }
+      .srow > .iw .pl { top: auto; bottom: 8px; }
+
+      .name-input { border-color: transparent !important; background: transparent !important; padding-left: 2px !important; font-size: 15px; font-weight: 500; }
+
+      .res-row1 { grid-template-columns: 1fr 1fr; }
+      .res-row1 .r-cell:nth-child(3) { grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,.08); border-right: none; }
+      .r-cell { padding: 1rem; }
+      .r-val { font-size: 20px; }
+      .r-val.lg { font-size: 22px; }
+      .bd-row { grid-template-columns: 75px 1fr 80px 34px; gap: 6px; }
+      .bd-amt { font-size: 12px; }
+    }
   </style>
 </head>
 <body>
@@ -186,10 +229,21 @@
         const d = document.createElement('div');
         d.className = 'srow';
         d.innerHTML = `
-          <input class="finput" type="text" value="${s.name}" placeholder="來源名稱" data-id="${s.id}" data-f="name">
-          <div class="iw"><input class="finput r" type="number" value="${s.traffic}" min="0" step="1" data-id="${s.id}" data-f="traffic"><span class="pu">人</span></div>
-          <div class="iw"><input class="finput r" type="number" value="${s.conv}" min="0" max="100" step="0.1" data-id="${s.id}" data-f="conv"><span class="pu">%</span></div>
-          <div class="iw hasl"><span class="pl">$</span><input class="finput r" type="number" value="${s.price}" min="0" step="100" data-id="${s.id}" data-f="price"></div>
+          <div class="name-wrap">
+            <input class="finput name-input" type="text" value="${s.name}" placeholder="來源名稱" data-id="${s.id}" data-f="name">
+          </div>
+          <div class="iw">
+            <div class="mob-label">每月流量</div>
+            <input class="finput r" type="number" value="${s.traffic}" min="0" step="1" data-id="${s.id}" data-f="traffic"><span class="pu">人</span>
+          </div>
+          <div class="iw">
+            <div class="mob-label">轉換率</div>
+            <input class="finput r" type="number" value="${s.conv}" min="0" max="100" step="0.1" data-id="${s.id}" data-f="conv"><span class="pu">%</span>
+          </div>
+          <div class="iw hasl">
+            <div class="mob-label">客單價</div>
+            <span class="pl">$</span><input class="finput r" type="number" value="${s.price}" min="0" step="100" data-id="${s.id}" data-f="price">
+          </div>
           <button class="del" data-id="${s.id}" aria-label="移除"><i class="ti ti-x" style="pointer-events:none"></i></button>
         `;
         el.appendChild(d);
